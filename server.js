@@ -2,10 +2,13 @@ const fs = require('fs');
 const http = require('http');
 const url = require('url');
 
-const publicFolder = "./public";
+const publicFolder = './public';
+const index = 'index.html';
 
 const port = 8000;
 
+console.log('Updating Index.html file');
+updateIndexHTML();
 
 // console.log('== Starting Server ==');
 // http.createServer(setupServer).listen(port);
@@ -35,7 +38,7 @@ const port = 8000;
 //   });
 // }
 
-updateIndexHTML();
+
 
 function updateIndexHTML() {
   let files = fs.readdirSync(publicFolder);
@@ -49,6 +52,22 @@ function updateIndexHTML() {
   
   let listHTMLData = listItems.join('');
 
+  let HTML = `
+  <html>
+  <body>
+  <h1>
+  Index File Listening
+  </h1>
+  <ul>
+  ${listHTMLData}
+  </ul>
+  </body>
+  </html>
+
+  `;
+
+  fs.writeFileSync(publicFolder + '/index.html', HTML);
+
 
   function filterOutArray(arr, obj) {
     return arr.filter(file => file != obj);
@@ -57,4 +76,6 @@ function updateIndexHTML() {
   function createListItem(item) {
     return `<li><a href='${item}'>${item}</a></li>`
   }
+
+  console.log('Index.html updated')
 }
