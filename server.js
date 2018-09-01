@@ -14,7 +14,11 @@ console.log('== Server Listening ==');
 
 function setupServer(req, res) {
   let q = url.parse(req.url, true);
-  let filename = '.' + q.pathname;
+  let filename = publicFolder + q.pathname;
+
+  if (filename == publicFolder +'/') {
+    filename = publicFolder + '/index.html';
+  }
 
   console.log('Atempting to open: ' + filename);
   fs.readFile(filename, (err, data) => {
