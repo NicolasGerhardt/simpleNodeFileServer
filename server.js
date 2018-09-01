@@ -18,7 +18,7 @@ function setupServer(req, res) {
   fs.readFile(filename, (err, data) => {
     if (err) {
       console.log('Could not find: ' + filename);
-      res.qriteHead(404, {'Content-Type' : 'text/html'});
+      res.writeHead(404, {'Content-Type' : 'text/html'});
       return res.end(`<html><body><h1>404 File Not Found! </h1></body></html>`);
     }
 
