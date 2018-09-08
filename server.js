@@ -77,7 +77,7 @@ function updateIndexHTML() {
   }
 
   function createListItem(item) {
-    return `<li><a href='${item}'>${item}</a></li>`
+    return `<li><a href='${item}\\index.html'>${item}</a></li>`
   }
 
   console.log('Index.html updated')
