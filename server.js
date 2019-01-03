@@ -10,9 +10,14 @@ const port = 8000;
 
 updateIndexHTML();
 
+console.log('=====================');
 console.log('== Starting Server ==');
 http.createServer(setupServer).listen(port);
 console.log('== Server Listening ==');
+console.log('=====================');
+console.log(`You can connect through localhost:${port}`);
+console.log('Kill server with ctrl + C');
+console.log('=====================');
 
 
 function setupServer(req, res) {
@@ -24,15 +29,20 @@ function setupServer(req, res) {
     filename = publicFolder + '/index.html';
   }
 
-  console.log('Atempting to open: ' + filename);
+  console.log(`Atempting to open: ${filename}`);
   fs.readFile(filename, (err, data) => {
     if (err) {
-      console.log('Could not find: ' + filename);
+      console.log(`Could not find: ${filename}`);
       res.writeHead(404, {'Content-Type' : 'text/html'});
-      return res.end(`<html><body><h1>404 File Not Found! </h1></body></html>`);
+      return res.end(`
+                <html><body>
+                <h1>404 File Not Found!</h1>
+                <p><a href='/index.html'>Return home</a></p>
+                </body></html>
+                `);
     }
 
-    console.log('Found file, loading: ' + filename);
+    console.log(`Found file, loading: ${filename}`);
     res.writeHead(200, {'Content-Type' : 'text/html'});
     res.write(data);
     return res.end();
@@ -42,7 +52,7 @@ function setupServer(req, res) {
 
 
 function updateIndexHTML() {
-  console.log('Updating Index.html file');
+  console.log(`Updating Index.html file`);
 
   let files = fs.readdirSync(publicFolder);
   files = filterOutArray(files, 'index.html');
@@ -53,16 +63,16 @@ function updateIndexHTML() {
     listItems.push(createListItem(files[i]));
   }
   
-  let listHTMLData = listItems.join('');
+  let HTMLListData = listItems.join('');
 
   let HTML = `
   <html>
   <body>
   <h1>
-  Index File Listening
+  Index File
   </h1>
   <ul>
-  ${listHTMLData}
+  ${HTMLListData}
   </ul>
   </body>
   </html>
@@ -77,7 +87,7 @@ function updateIndexHTML() {
   }
 
   function createListItem(item) {
-    return `<li><a href='${item}\\index.html'>${item}</a></li>`
+    return `<li><a href='${item}/index.html'>${item}</a></li>`
   }
 
   console.log('Index.html updated')
