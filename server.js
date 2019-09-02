@@ -43,8 +43,17 @@ function setupServer(req, res) {
     }
 
     console.log(`Found file, loading: ${filename}`);
-    res.writeHead(200, {'Content-Type' : 'text/html'});
+    if (filename.toLowerCase().includes(".html")) {
+      res.writeHead(200, {'Content-Type' : 'text/html'});
+    } else if (filename.toLowerCase().includes(".css")) {
+      res.writeHead(200, {'Content-Type' : 'text/css'});
+    } else if (filename.toLowerCase().includes(".js")) {
+      res.writeHead(200, {'Content-Type' : 'text/javascript'});
+    } else if (filename.toLowerCase().includes(".png")) {
+      res.writeHead(200, {'Content-Type' : 'image/png'});
+    }
     res.write(data);
+    console.log(`Found file, sent: ${filename}`);
     return res.end();
   });
 }
@@ -62,7 +71,7 @@ function updateIndexHTML() {
   for (let i = 0; i < files.length; i++) {
     listItems.push(createListItem(files[i]));
   }
-  
+
   let HTMLListData = listItems.join('');
 
   let HTML = `
